@@ -55,6 +55,7 @@ async function searchAxios(params = {}){
 async function renderResolt(){
     try {
         const data = await searchAxios(_UNKNOWN_PARAMETERS);
+        console.log(data);
         if(!data.totalHits){
             Notify.failure('Sorry, there are no images matching your search query. Please try again.');
         }else if(data.totalHits < _UNKNOWN_PARAMETERS.page * params.per_page){
