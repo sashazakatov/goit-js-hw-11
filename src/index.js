@@ -49,12 +49,14 @@ function observerCallback([entry], observe){
   }
 }
 async function searchAxios(params = {}){
+    console.log(1);
     const response = await instance.get('/api' ,{params});
+    console.log(response);
     return await response.data;
 }
 async function renderResolt(){
     try {
-        const data = await searchAxios(_UNKNOWN_PARAMETERS);
+        const data = await (_UNKNOWN_PARAMETERS);
         console.log(data);
         if(!data.totalHits){
             Notify.failure('Sorry, there are no images matching your search query. Please try again.');
