@@ -1,40 +1,21 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import SimpleLightbox from "simplelightbox";
-import "simplelightbox/dist/simple-lightbox.min.css";
-import axios from 'axios';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+import SearchImages from './js/search_images';
 
 const simplelightbox = new SimpleLightbox('.gallery__item');
-
-const _UNKNOWN_PARAMETERS = {
-    page: 1,
-    q: null
-}
-
-const params = {
-    key : '34316730-360f829ab2b8fbc41f5ac52ed',
-    image_type: 'photo',
-    orientation: 'horizontal',
-    safesearch: true,
-    per_page: 20,
-};
 
 const refs = {
     form: document.querySelector('#search-form'),
     gallery: document.querySelector('.gallery'),
 }
 
-
-const instance = axios.create({
-    baseURL: 'https://pixabay.com',
-    params,
-});
-
 refs.form.addEventListener('submit', onFormSubmit);
 
 
 function onFormSubmit(e){
     e.preventDefault();
-    _UNKNOWN_PARAMETERS.q = e.currentTarget.elements.searchQuery.value;
+    SearchImages.q = e.currentTarget.elements.searchQuery.value;
     rest();
     renderResolt();
 }
@@ -44,20 +25,16 @@ const observer = new IntersectionObserver(observerCallback, {
 function observerCallback([entry], observe){
   if(entry.isIntersecting){
     observe.unobserve(entry.target);
-    _UNKNOWN_PARAMETERS.page += 1;
+    SearchImages.page += 1;
     renderResolt();
   }
 }
-async function searchAxios(params = {}){
-    const response = await instance.get('/api/' ,{params});
-    return await response.data;
-}
 async function renderResolt(){
     try {
-        const data = await searchAxios(_UNKNOWN_PARAMETERS);
+        const data = await SearchImages.searchAxios();
         if(!data.totalHits){
             Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-        }else if(data.totalHits < _UNKNOWN_PARAMETERS.page * params.per_page){
+        }else if(data.totalHits < SearchImages.page * SearchImages.per_page){
           Notify.failure('We\'re sorry, but you\'ve reached the end of search results.');
         }
         else{
@@ -65,7 +42,6 @@ async function renderResolt(){
           simplelightbox.refresh();
           const lastPhotoCard = document.querySelector('.photo-card:last-child');
           observer.observe(lastPhotoCard);
-          smoothScroll();
         }
       } catch(error) {
         console.log(error.message);
@@ -104,15 +80,5 @@ function renderMarkup(markup){
 }
 function rest(){
     refs.gallery.textContent = '';
-    _UNKNOWN_PARAMETERS.page = 1;
-}
-function smoothScroll(){
-  const { height: cardHeight } = document
-  .querySelector(".gallery")
-  .firstElementChild.getBoundingClientRect();
-
-window.scrollBy({
-  top: cardHeight * 2,
-  behavior: "smooth",
-});
-}
+    SearchImages.page = 1;
+} 
