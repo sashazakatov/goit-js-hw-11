@@ -1,0 +1,25 @@
+.search-form{
+    display: flex;
+    justify-content: center;
+    background-color: blue;
+    padding: 10px;
+    
+    &__input{
+        padding: 11px 11px 11px 32px;
+        
+        width: 400px;
+        height: 40px;
+
+        
+        border: 1px solid rgba(33, 33, 33, 0.2);
+        outline: none;
+
+        cursor: pointer;
+    }
+    &__submit{
+        color: #212121;
+        background-color: #f5f4fa;
+        padding: 6px 22px;
+        border: none;
+    }
+}
