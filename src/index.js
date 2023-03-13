@@ -49,15 +49,12 @@ function observerCallback([entry], observe){
   }
 }
 async function searchAxios(params = {}){
-    console.log(1);
     const response = await instance.get('/api' ,{params});
-    console.log(response);
     return await response.data;
 }
 async function renderResolt(){
-    // try {
+    try {
         const data = await searchAxios(_UNKNOWN_PARAMETERS);
-        console.log(data)
         if(!data.totalHits){
             Notify.failure('Sorry, there are no images matching your search query. Please try again.');
         }else if(data.totalHits < _UNKNOWN_PARAMETERS.page * params.per_page){
@@ -70,9 +67,9 @@ async function renderResolt(){
           observer.observe(lastPhotoCard);
           smoothScroll();
         }
-      // } catch(error) {
-      //   console.log(error.message);
-      // }
+      } catch(error) {
+        console.log(error.message);
+      }
 }
 function getMarkup(hits){
     return hits.map(({webformatURL, largeImageURL, tags, likes, views, comments, downloads}) =>{
