@@ -49,7 +49,7 @@ function observerCallback([entry], observe){
   }
 }
 async function searchAxios(params = {}){
-    const response = await instance.get('/api' ,{params});
+    const response = await instance.get('/api/' ,{params});
     return await response.data;
 }
 async function renderResolt(){
