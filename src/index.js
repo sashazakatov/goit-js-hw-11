@@ -25,7 +25,7 @@ const refs = {
 
 
 const instance = axios.create({
-    baseURL: 'https://pixabay.com',
+    // baseURL: 'https://pixabay.com',
     params,
 });
 
@@ -50,7 +50,7 @@ function observerCallback([entry], observe){
 }
 async function searchAxios(params = {}){
     console.log(1);
-    const response = await instance.get('/api' ,{params});
+    const response = await instance.get('https://pixabay.com/api' ,{params});
     console.log(response);
     return await response.data;
 }
